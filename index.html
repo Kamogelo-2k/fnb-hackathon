@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobHunt - Find Your Dream Job</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>JobHunt</h1>
+            </div>
+            <div class="header-actions">
+                <button class="notification-btn" id="notificationBtn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+            </div>
+        </div>
+        
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Home Section -->
+        <section id="home" class="content-section active">
+            <!-- Search Bar -->
+            <div class="search-container">
+                <div class="search-bar">
+                    <div class="search-input">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search jobs" id="jobSearch">
+                    </div>
+                    <div class="search-divider"></div>
+                    <div class="location-input">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <input type="text" placeholder="Location" id="locationSearch" value="South Africa">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-header">
+                <h2>Jobs for you</h2>
+                <p>Jobs based on your activity on JobHunt</p>
+            </div>
+            
+            <div class="jobs-container" id="jobsContainer">
+                <!-- Job cards will be dynamically generated here -->
+            </div>
+        </section>
+
+        <!-- My Jobs Section -->
+        <section id="my-jobs" class="content-section">
+            <div class="section-header">
+                <h2>My Jobs</h2>
+                <p>Track your job applications and progress</p>
+            </div>
+            
+            <!-- Job Categories Tabs -->
+            <div class="job-categories">
+                <button class="category-tab active" data-category="saved">
+                    <i class="fas fa-bookmark"></i>
+                    <span>Saved</span>
+                    <span class="count" id="savedCount">0</span>
+                </button>
+                <button class="category-tab" data-category="applied">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>Applied</span>
+                    <span class="count" id="appliedCount">0</span>
+                </button>
+                <button class="category-tab" data-category="interviews">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Interviews</span>
+                    <span class="count" id="interviewsCount">0</span>
+                </button>
+                <button class="category-tab" data-category="achieved">
+                    <i class="fas fa-trophy"></i>
+                    <span>Achieved</span>
+                    <span class="count" id="achievedCount">0</span>
+                </button>
+            </div>
+            
+            <!-- Job Lists Container -->
+            <div class="jobs-lists-container">
+                <!-- Saved Jobs -->
+                <div class="job-list active" id="savedJobs">
+                    <div class="empty-state">
+                        <i class="fas fa-bookmark"></i>
+                        <p>No saved jobs yet</p>
+                        <p>Start browsing and save jobs you're interested in</p>
+                    </div>
+                </div>
+                
+                <!-- Applied Jobs -->
+                <div class="job-list" id="appliedJobs">
+                    <div class="empty-state">
+                        <i class="fas fa-paper-plane"></i>
+                        <p>No applications yet</p>
+                        <p>Apply to jobs to track your progress</p>
+                    </div>
+                </div>
+                
+                <!-- Interview Jobs -->
+                <div class="job-list" id="interviewJobs">
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-check"></i>
+                        <p>No interviews scheduled</p>
+                        <p>Interviews will appear here when scheduled</p>
+                    </div>
+                </div>
+                
+                <!-- Achieved Jobs -->
+                <div class="job-list" id="achievedJobs">
+                    <div class="empty-state">
+                        <i class="fas fa-trophy"></i>
+                        <p>No achievements yet</p>
+                        <p>Successful applications will appear here</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chat Bot Section -->
+        <section id="chatbot" class="content-section">
+            <div class="section-header">
+                <h2>Job Assistant</h2>
+                <p>Get help with your job search</p>
+            </div>
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="chat-message bot-message">
+                        <div class="message-content">
+                            <p>Hi! I'm your job search assistant. How can I help you today?</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-input-container">
+                    <input type="text" id="chatInput" placeholder="Ask me anything about jobs...">
+                    <button id="sendMessage"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="content-section">
+            <div class="section-header">
+                <h2>Profile</h2>
+                <p>Manage your account and preferences</p>
+            </div>
+            <div class="profile-content">
+                <!-- Signed-in view (hidden when signed out) -->
+                <div id="signedInView">
+                    <div class="profile-card">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="profile-info">
+                            <h3 id="profileName">John Doe</h3>
+                            <p id="profileOccupation">Software Developer</p>
+                            <p id="profileLocation">Johannesburg, South Africa</p>
+                        </div>
+                    </div>
+                    <div class="profile-actions">
+                        <button class="action-btn" onclick="showEditProfile()">
+                            <i class="fas fa-edit"></i>
+                            Edit Profile
+                        </button>
+                        <button class="action-btn" onclick="showAutoApply()">
+                            <i class="fas fa-robot"></i>
+                            Auto Apply
+                            <span class="trial-badge">Free Trial</span>
+                        </button>
+                        <button class="action-btn" onclick="showSettings()">
+                            <i class="fas fa-cog"></i>
+                            Settings
+                        </button>
+                        <button class="action-btn" onclick="showCvDownloadModal()">
+                            <i class="fas fa-download"></i>
+                            Download CV
+                        </button>
+                        <button class="action-btn sign-out-btn" onclick="signOut()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Sign Out
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Signed-out view -->
+                <div id="signedOutView" class="signed-out-cta">
+                    <h3>Welcome to JobHunt</h3>
+                    <p>Please sign in or create an account to apply for jobs and save preferences.</p>
+                    <div class="cta-actions">
+                        <button class="btn btn-primary" onclick="showSignInModal()"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+                        <button class="btn btn-secondary" onclick="showCreateAccountModal()"><i class="fas fa-user-plus"></i> Create Account</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Edit Profile Section -->
+        <section id="edit-profile" class="content-section">
+            <div class="section-header">
+                <button class="back-btn" onclick="showProfile()">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Profile
+                </button>
+                <h2>Edit Profile</h2>
+                <p>Update your personal information and preferences</p>
+            </div>
+            <div class="edit-profile-content">
+                <form id="editProfileForm" class="edit-profile-form">
+                    <!-- Personal Information -->
+                    <div class="form-section">
+                        <h3>Personal Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name *</label>
+                                <input type="text" id="firstName" name="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name *</label>
+                                <input type="text" id="lastName" name="lastName" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="occupation">Occupation *</label>
+                            <input type="text" id="occupation" name="occupation" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Location *</label>
+                            <input type="text" id="location" name="location" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                    </div>
+
+                    <!-- Visibility Settings -->
+                    <div class="form-section">
+                        <h3>Visibility Settings</h3>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="visibleToEmployers" name="visibleToEmployers">
+                                <span class="checkmark"></span>
+                                Allow employers to find me on the app
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Resume Upload -->
+                    <div class="form-section">
+                        <h3>Resume/CV</h3>
+                        <div class="form-group">
+                            <label for="resume1">Resume 1 (PDF, DOC, DOCX - Max 5MB)</label>
+                            <input type="file" id="resume1" name="resume1" accept=".pdf,.doc,.docx">
+                            <div class="file-info" id="resume1Info"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="resume2">Resume 2 (PDF, DOC, DOCX - Max 5MB)</label>
+                            <input type="file" id="resume2" name="resume2" accept=".pdf,.doc,.docx">
+                            <div class="file-info" id="resume2Info"></div>
+                        </div>
+                    </div>
+
+                    <!-- Qualifications -->
+                    <div class="form-section">
+                        <h3>Qualifications</h3>
+                        <div class="form-group">
+                            <label for="qualifications">Qualifications & Education</label>
+                            <textarea id="qualifications" name="qualifications" rows="4" placeholder="List your qualifications, degrees, certifications, etc."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Job Preferences -->
+                    <div class="form-section">
+                        <h3>Job Preferences</h3>
+                        <div class="form-group">
+                            <label for="jobPreferences">Job Preferences</label>
+                            <textarea id="jobPreferences" name="jobPreferences" rows="3" placeholder="Describe your job preferences, desired roles, work environment, etc."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Hide Jobs -->
+                    <div class="form-section">
+                        <h3>Job Filtering</h3>
+                        <div class="form-group">
+                            <label for="hideJobDetails">Hide jobs with these details</label>
+                            <textarea id="hideJobDetails" name="hideJobDetails" rows="3" placeholder="Enter keywords or company names to hide from your job feed"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Ready to Work -->
+                    <div class="form-section">
+                        <h3>Availability</h3>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="readyToWork" name="readyToWork">
+                                <span class="checkmark"></span>
+                                I am ready to work and actively seeking employment
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="showProfile()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+            <!-- Auto Apply Section -->
+            <section id="auto-apply" class="content-section">
+                <div class="section-header">
+                    <button class="back-btn" onclick="showProfile()">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Profile
+                    </button>
+                    <h2>Auto Apply <span class="trial-badge">Free Trial</span></h2>
+                    <p>Set up automatic job applications based on your preferences</p>
+                </div>
+                <div class="auto-apply-content">
+                    <div class="auto-apply-card">
+                        <div class="auto-apply-status">
+                            <div class="status-toggle">
+                                <label class="switch">
+                                    <input type="checkbox" id="autoApplyToggle" onchange="toggleAutoApply()">
+                                    <span class="slider round"></span>
+                                </label>
+                                <span class="status-text">Auto Apply is <span id="autoApplyStatus">OFF</span></span>
+                            </div>
+                            <div class="trial-info">
+                                <i class="fas fa-clock"></i>
+                                <span>14 days remaining in trial</span>
+                            </div>
+                        </div>
+
+                        <form id="autoApplyForm" class="auto-apply-form">
+                            <div class="form-group">
+                                <label for="jobTitle">Job Title/Keywords *</label>
+                                <input type="text" id="jobTitle" name="jobTitle" placeholder="e.g., Software Developer, Project Manager" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="jobLocation">Preferred Location *</label>
+                                <input type="text" id="jobLocation" name="jobLocation" placeholder="e.g., Johannesburg, Cape Town, Remote" required>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="minSalary">Minimum Salary (Monthly) *</label>
+                                    <input type="number" id="minSalary" name="minSalary" placeholder="R" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="maxSalary">Maximum Salary (Monthly) *</label>
+                                    <input type="number" id="maxSalary" name="maxSalary" placeholder="R" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Job Type</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="jobType" value="full-time">
+                                        <span class="checkmark"></span>
+                                        Full Time
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="jobType" value="part-time">
+                                        <span class="checkmark"></span>
+                                        Part Time
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="jobType" value="contract">
+                                        <span class="checkmark"></span>
+                                        Contract
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="jobType" value="internship">
+                                        <span class="checkmark"></span>
+                                        Internship
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Work Type</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="workType" value="remote">
+                                        <span class="checkmark"></span>
+                                        Remote
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="workType" value="hybrid">
+                                        <span class="checkmark"></span>
+                                        Hybrid
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="workType" value="onsite">
+                                        <span class="checkmark"></span>
+                                        On-site
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Requirements (Select all that apply)</label>
+                                <div class="requirements-container" id="requirementsContainer">
+                                    <div class="requirement-tag">
+                                        <span>Experience: 1-3 years</span>
+                                        <button type="button" class="remove-tag">×</button>
+                                    </div>
+                                    <button type="button" class="add-requirement-btn" onclick="showRequirementModal()">
+                                        <i class="fas fa-plus"></i> Add Requirement
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="immediatelyAvailable" name="immediatelyAvailable">
+                                    <span class="checkmark"></span>
+                                    I am available to start immediately
+                                </label>
+                            </div>
+
+                            <div class="auto-apply-footer">
+                                <button type="button" class="btn btn-secondary" onclick="resetAutoApply()">Reset</button>
+                                <button type="submit" class="btn btn-primary">Save Preferences</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Auto Apply Stats -->
+                    <div class="auto-apply-stats">
+                        <h3>Auto Apply Statistics</h3>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <i class="fas fa-paper-plane"></i>
+                                <span class="stat-number">0</span>
+                                <span class="stat-label">Applications Sent</span>
+                            </div>
+                            <div class="stat-card">
+                                <i class="fas fa-check-circle"></i>
+                                <span class="stat-number">0</span>
+                                <span class="stat-label">Matches Found</span>
+                            </div>
+                            <div class="stat-card">
+                                <i class="fas fa-calendar-check"></i>
+                                <span class="stat-number">0</span>
+                                <span class="stat-label">Days Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings" class="content-section">
+            <div class="section-header">
+                <button class="back-btn" onclick="showProfile()">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Profile
+                </button>
+                <h2>Settings</h2>
+                <p>Manage your account settings and preferences</p>
+            </div>
+            <div class="settings-content">
+                <!-- Security Settings -->
+                <div class="settings-section">
+                    <h3><i class="fas fa-shield-alt"></i> Security Settings</h3>
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label for="password">Change Password</label>
+                            <input type="password" id="currentPassword" placeholder="Current Password">
+                            <input type="password" id="newPassword" placeholder="New Password">
+                            <input type="password" id="confirmPassword" placeholder="Confirm New Password">
+                            <button class="btn btn-primary">Update Password</button>
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="twoFactorAuth">
+                                <span class="checkmark"></span>
+                                Enable Two-Factor Authentication
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="thirdPartyApps">
+                                <span class="checkmark"></span>
+                                Allow Third-Party App Access
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Communication Settings -->
+                <div class="settings-section">
+                    <h3><i class="fas fa-bell"></i> Communication Settings</h3>
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label for="emailNotifications">Email Notifications</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="emailJobAlerts">
+                                    <span class="checkmark"></span>
+                                    Job Alerts
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="emailMessages">
+                                    <span class="checkmark"></span>
+                                    Messages
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="emailUpdates">
+                                    <span class="checkmark"></span>
+                                    Account Updates
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="smsNotifications">SMS Notifications</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="smsJobAlerts">
+                                    <span class="checkmark"></span>
+                                    Job Alerts
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="smsMessages">
+                                    <span class="checkmark"></span>
+                                    Messages
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Device Management -->
+                <div class="settings-section">
+                    <h3><i class="fas fa-laptop"></i> Device Management</h3>
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <h4>Current Device</h4>
+                            <div class="device-info">
+                                <p><strong>Browser:</strong> <span id="currentBrowser"></span></p>
+                                <p><strong>Platform:</strong> <span id="currentPlatform"></span></p>
+                                <p><strong>Last Login:</strong> <span id="lastLogin"></span></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <h4>Login History</h4>
+                            <div class="login-history" id="loginHistory">
+                                <!-- Login history will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Privacy Settings -->
+                <div class="settings-section">
+                    <h3><i class="fas fa-user-secret"></i> Privacy Settings</h3>
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="profileVisibility">
+                                <span class="checkmark"></span>
+                                Make Profile Public
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="showEmail">
+                                <span class="checkmark"></span>
+                                Show Email to Employers
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="showPhone">
+                                <span class="checkmark"></span>
+                                Show Phone Number to Employers
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="activityStatus">
+                                <span class="checkmark"></span>
+                                Show Activity Status
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Navigation -->
+
+    <!-- CV Download Modal -->
+    <div id="cvDownloadModal" class="modal hidden" aria-hidden="true">
+        <div class="modal-overlay"></div>
+        <div class="modal-panel">
+            <div class="modal-header">
+                <h3>Download CV</h3>
+                <button class="modal-close" onclick="closeCvDownloadModal()">&times;</button>
+            </div>
+            <div class="modal-content">
+                <p>Please select which CV you would like to download:</p>
+                <div class="cv-options">
+                    <button class="cv-option" onclick="downloadCV(1)">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Resume 1</span>
+                        <small id="resume1Name">No file uploaded</small>
+                    </button>
+                    <button class="cv-option" onclick="downloadCV(2)">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Resume 2</span>
+                        <small id="resume2Name">No file uploaded</small>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+
+    <!-- Sign In Modal -->
+    <div id="signInModal" class="modal hidden" aria-hidden="true">
+        <div class="modal-overlay" onclick="closeSignInModal()"></div>
+        <div class="modal-panel">
+            <div class="modal-header">
+                <h3>Sign In</h3>
+                <button class="modal-close" onclick="closeSignInModal()">&times;</button>
+            </div>
+            <div class="modal-content">
+                <form id="signInForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="signinEmail">Email</label>
+                        <input type="email" id="signinEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signinPassword">Password</label>
+                        <input type="password" id="signinPassword" required>
+                    </div>
+                    <div class="auto-apply-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeSignInModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Sign In</button>
+                    </div>
+                </form>
+                <p class="auth-help">Don't have an account? <a href="#" onclick="switchToCreate()">Create one</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Account Modal -->
+    <div id="createAccountModal" class="modal hidden" aria-hidden="true">
+        <div class="modal-overlay" onclick="closeCreateAccountModal()"></div>
+        <div class="modal-panel">
+            <div class="modal-header">
+                <h3>Create Account</h3>
+                <button class="modal-close" onclick="closeCreateAccountModal()">&times;</button>
+            </div>
+            <div class="modal-content">
+                <form id="createAccountForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="createFirstName">First Name</label>
+                        <input type="text" id="createFirstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="createLastName">Last Name</label>
+                        <input type="text" id="createLastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="createEmail">Email</label>
+                        <input type="email" id="createEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="createPassword">Password</label>
+                        <input type="password" id="createPassword" required>
+                    </div>
+                    <div class="auto-apply-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeCreateAccountModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create Account</button>
+                    </div>
+                </form>
+                <p class="auth-help">Already have an account? <a href="#" onclick="switchToSignIn()">Sign in</a></p>
+            </div>
+        </div>
+    </div>
+    <nav class="bottom-nav">
+        <button class="nav-item active" data-section="home">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </button>
+        <button class="nav-item" data-section="my-jobs">
+            <i class="fas fa-bookmark"></i>
+            <span>My Jobs</span>
+        </button>
+        <button class="nav-item" data-section="chatbot">
+            <i class="fas fa-comments"></i>
+            <span>Chat Bot</span>
+        </button>
+        <button class="nav-item" data-section="profile">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </button>
+    </nav>
+
+    <!-- Notifications panel (populated by JS) -->
+    <div id="notificationsPanel" class="notifications-panel hidden" aria-hidden="true"></div>
+
+    <!-- Job details modal (dynamically populated) -->
+    <div id="jobModal" class="job-modal hidden" aria-hidden="true">
+        <div class="job-modal-overlay" id="jobModalOverlay"></div>
+        <div class="job-modal-panel" role="dialog" aria-modal="true" aria-labelledby="jobModalTitle">
+            <button class="job-modal-close" id="jobModalClose" aria-label="Close">&times;</button>
+            <div id="jobModalContent"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
